@@ -1,0 +1,49 @@
+<!-- Template to show the real-time chat -->
+
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<div style="margin: auto; width:60%">
+    <div class="col-lg-12">
+        <article class="white-block zoso-border">
+            <div class="top-cat-title">
+                <div class="row justify-content-center ">
+                    <!-- This is the input text box and 'Send' button -->
+                    <div class="col-md-5 col-lg-12 position-relative">
+                        <input class="textInput" id="chat-message-input" type="text" size="100%"><br>
+                        <input class="btn btn-dark btn-sm btn-block" id="chat-message-submit" type="button"
+                            value="Send Message">
+                            <!-- Make roomname available to the javascript file -->
+                            {{ roomname|json_script:"room-name" }}
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- This displays the actual chat -->
+    <div class="col-lg-12">
+        <article class="white-block zoso-border">
+            <div class="chatcontainer">
+                <div id="chat"></div>
+                <!-- Displays the chat history if there is some chat history -->
+                {% for chat in chats.all %}
+                {% if chat.user.id == request.user.id %}
+                <div class="message sender">
+                    <p class="chattext">{{ chat.chattext }}</p>
+                </div>
+                {% else %}
+                <div class="message receiver">
+                    <p class="chattext">{{ chat.chattext }}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </article>
+    </div>
+</div>
+<script src="{% static 'js/chatroom.js' %}"></script>
+<!-- Send the 'user_id' to the javascript file so we know who the user is -->
+{{ request.user.id|json_script:"user_id" }}
+{% endblock content %}

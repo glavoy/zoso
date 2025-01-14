@@ -1,0 +1,36 @@
+<!-- Template where a user can edit a previous post they made -->
+
+{% extends 'base/base.html' %}
+<!-- Use crispy forms to style the form -->
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div style="margin: auto; width:60%">
+    <div class="container">
+        <div class="col-lg-12">
+            <article class="white-block zoso-border">
+                <div class="container">
+                    <!-- Displays a text input with the previous text -->
+                    <!-- and user can change it if they want -->
+                    <div class="row justify-content-center mt-5">
+                        <div class="col-md-9 col-sm-12">
+                            <h5>Update Your Post</h5>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-3 mb-5">
+                        <div class="col-md-9 col-sm-12">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form | crispy }}
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-dark mt-3">Submit Edit!</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock content %}

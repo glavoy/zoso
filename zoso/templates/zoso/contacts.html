@@ -1,0 +1,39 @@
+<!-- Template to display the users contacts -->
+
+{% extends 'base/base.html' %}
+{% block content %}
+<div style="margin: auto; width:60%">
+    <div class="container">
+        <div class="col-lg-12">
+            <article class="white-block zoso-border">
+                    <!-- Show the contacts if the user has contacts -->
+                    {% if contacts %}
+                        <h2>Your contacts:</h2>
+                        <!-- Loop through all the contacts -->
+                        {% for contact in contacts %}
+                        <div class="row justify-content-center mt-3">
+                            <div class="col-md-8 col-sm-12 border-bottom position-relative">
+                                <a style="text-decoration: none;" class="text-primary" href="{% url 'profile' contact.pk %}">
+                                <!-- If user has a full name, display it -->
+                                {% if contact.profile.fullname %}
+                                    <h3>{{ contact.profile.fullname }}</h3>
+                                {% endif %}
+                                <!-- If user has a location, display it -->
+                                {% if contact.profile.location %}
+                                    <p>{{ contact.profile.location }}</p>
+                                {% endif %}
+                                    <p> @{{ contact.username }}</p>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    <!-- Display message if user has no contacts yet -->
+                    {% else %}
+                        <p>You do not have any contacts yet...</p>
+                        <p>Use the Search bar above to find interesting people</p>
+                    {% endif %}
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock content %}

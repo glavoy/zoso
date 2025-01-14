@@ -1,0 +1,161 @@
+<!--  This is the main template for the project
+It includes the sidebar, header and footer-->
+
+<!-- Load the 'static' files (css, images, js)-->
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Use zoso stylesheet -->
+    <!-- Mostly taken form here: https://themewagon.com/themes/free-bootstrap-5-html-5-admin-dashboard-website-template-elegant/ -->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/zoso.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Zoso</title>
+  </head>
+
+  <body>
+
+    <div class="layer"></div>
+    <div class="page-flex">
+
+      <!-- ! Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-start">
+          <div class="sidebar-head">
+            <!-- Only navigate ot main page if user is authenticated -->
+            <a {% if user.is_authenticated %} href="{% url 'post-list' %}" {% else %} href="{% url 'home' %}" {% endif %}
+              class="logo-wrapper" title="Home">
+              <span class="icon logo" aria-hidden="true"></span>
+              <div class="logo-text">
+                <span class="logo-subtitle">Zoso</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Show links if user is authenticated -->
+          {% if user.is_authenticated %}
+          <div class="sidebar-body">
+            <ul class="sidebar-body-menu">
+
+              <li>
+                <a class="show-cat-btn" {% if user.is_authenticated %} href="{% url 'post-list' %}" {% endif %}>
+                  <span class="icon home" aria-hidden="true"></span>Home
+                </a>
+              </li>
+
+              <li>
+                <a class="show-cat-btn" {% if user.is_authenticated %} href="{% url 'profile' user.profile.pk%}" {% endif  %}>
+                  <span class="icon folder" aria-hidden="true"></span>My page
+                </a>
+              </li>
+
+              <li>
+                <a class="show-cat-btn" {% if user.is_authenticated %} href="{% url 'selectchat' user.profile.pk%}" {% endif %}>
+                  <span class="icon document" aria-hidden="true"></span>Chat
+                </a>
+              </li>
+
+              </li>
+
+              <li>
+                <a class="show-cat-btn" {% if user.is_authenticated %} href="{% url 'contacts' user.profile.pk%}" {% endif %}>
+                  <span class="icon user-3" aria-hidden="true"></span>Contacts
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+
+        <!--  Sidebar footer -->
+        <!--  Shows user and logout button -->
+        <div class="sidebar-footer">
+          <a href="{% url 'profile' user.profile.pk%}" class="sidebar-user">
+            <span class="sidebar-user-img">
+              <picture>
+                <img src="{{ user.profile.profilepic.url }}" alt="User name">
+              </picture>
+            </span>
+            <div class="sidebar-user-info">
+              {% if user.profile.fullname %}
+              <span class="sidebar-user__title">{{user.profile.fullname}}</span>
+              {% endif %}
+              <span class="sidebar-user__subtitle">@{{user}}</span>
+            </div>
+          </a>
+
+          <div class="col text-center mt-3">
+            <a href="{% url 'account_logout' %}" class="btn btn-dark btn-sm btn-block">Sign Out</a>
+          </div>
+        </div>
+        {% endif %}
+      </aside>
+
+
+      <!-- Show search bar if user is authenticated -->
+      <div class="main-wrapper">
+        <nav class="main-nav--bg">
+          <div class="container main-nav">
+            {% if user.is_authenticated %}
+            <div class="main-nav-start">
+              <form method="GET" action="{% url 'user-search' %}">
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1"></span>
+                  <!-- Input text for the query -->
+                  <input type="text" placeholder="Find people..." aria-label="Search" aria-describedby="basic-addon1"
+                    name="query" value="{{ request.GET.query }}">
+                  <button class="btn btn-dark">Go</button>
+                </div>
+              </form>
+            </div>
+            {% endif %}
+          </div>
+        </nav>
+
+
+
+        <!-- This is where the main content is displayed for each page -->
+        <main class="main users chart-page" id="skip-target">
+          <div class="container">
+            <div class="row stat-cards">
+            </div>
+            <div class="row">
+              {% block content %}
+              {% endblock content %}
+            </div>
+          </div>
+        </main>
+
+
+
+        <!-- ! Footer -->
+        <footer class="footer">
+          <div class="container footer--flex">
+            <div class="footer-start">
+              <p>2022 Advanced Web Development</p>
+            </div>
+            <ul class="footer-end">
+              <li><a href="{% url 'zoso_api_root' %}">API</a></li>
+            </ul>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <!-- https://getbootstrap.com/docs/5.1/getting-started/introduction/ -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<!-- Template to display all the posts -->
+<!-- Only posts from the user and their contacts are displayed -->
+<!-- Users can also post here. -->
+
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div style="margin: auto; width:60%">
+    <div class="col-lg-12">
+        <h1 class="zoso-page-title" >Zoso Home</h1>
+        <article class="white-block zoso-border">
+                <div class="row justify-content-center mt-3">
+                    <div class="col-sm-9">
+                        <h5>What's up?</h5>
+                    </div>
+                </div>
+                
+                <!-- Form where a user can add a new post -->
+                <div class="row justify-content-center mt-3 mb-5">
+                    <div class="col-sm-9">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form }}
+                            <div class="d-grid gap-2 mt-3"> 
+                                <button class="btn btn-dark">Submit!</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </article>
+    </div>
+
+    <!-- Show all the posts -->
+    <!-- Shows the images and the user who created the poast as well as the date -->   
+    {% for post in post_list %}
+    <div class="col-lg-12">
+        <article class="white-block zoso-border">
+            <div class="top-cat-title">
+                <div class="row justify-content-center ">
+                    <div class="col-md-5 col-lg-12 position-relative">
+
+                        <!-- Show the image if there is one -->
+                        <div class="position-relative">
+                            {% if post.image %}
+                            <img src="{{ post.image.url }}"
+                                style="border-radius: 10px; margin-bottom: 10px" />
+                            {% endif %}
+                            <!-- Show the text -->
+                            <h3>{{ post.text }}</h3>
+                            <a href="{% url 'post-detail' post.pk %}" class="stretched-link"></a>
+                        </div>
+
+                        <!-- Show info about the post -->
+                        <div class="border-top mt-3">
+                        <p><a style="text-decoration: none" class="text-primary"
+                            href="{% url 'profile' post.createdby.profile.pk %}">@{{ post.createdby }}</a> on {{post.createdon}}
+                        </p> 
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    {% endfor %}
+    </div>
+{% endblock content %}

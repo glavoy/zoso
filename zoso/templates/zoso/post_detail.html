@@ -1,0 +1,65 @@
+<!-- Template to display the details of a post -->
+<!-- Comments can aslo be added to the post -->
+
+{% extends 'base/base.html' %}
+<!-- Use crispy forms to style the form -->
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div style="margin: auto; width:60%">
+    <div class="container">
+        <h4 style="text-align: center; padding-bottom:10px" >Add a comment to this post...</h4>
+        <div class="col-lg-12">
+            <article class="white-block zoso-border">
+                <div class="container">
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-md-9 col-sm-12 border-bottom">
+                            <p>
+                                <!-- Display the information about the user who created the original post -->
+                                <strong>{{ post.createdby }}</strong> {{ post.createdon }}
+                                {% if request.user == post.createdby %}
+                                <a href="{% url 'post-edit' post.pk %}" class="btn btn-outline-dark btn-sm btn-block">Edit</a>
+                                {% endif %}
+                            </p>
+                            <p>{{ post.text }}</p>
+                        </div>
+                    </div>
+                
+                    <!-- Show form to add comment -->
+                    <div class="row justify-content-center mt-3 mb-5 ">
+                        <div class="col-md-9 col-sm-12">
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{ form | crispy }}
+                                <div class="d-grid gap-2 mt-3"> 
+                                    <button class="btn btn-dark">Add Comment!</button>
+                                </div>                
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <!-- Show all previous comments -->
+                    <div class="row justify-content-center mt-3 border-top">
+                        <h5>Comments:</h5>
+                    </div>
+                    
+                    <!-- Loop through each commetn and display them -->
+                    {% for comment in comments %}
+                    <div class="row justify-content-center mt-3">
+                        <div class="col-md-9 col-sm-12">
+                            <p><strong>{{ comment.createdby }}</strong> {{ comment.createdon }}</p>
+                            <p>{{ comment.comment }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endblock content %}
+            </article>
+        </div>
+    </div>
+</div>
+
+
+
+
