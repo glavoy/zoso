@@ -17,8 +17,7 @@ Zoso is a fully functional social media web application built using the Django f
 ## Prerequisites
 - Python 3.10.2 or higher
 - Django 4.0.3
-- Redis or Memurai (for Windows users)
-- Git (optional, for cloning the repository)
+- Redis (or Memurai for Windows users)
 
 ---
 
